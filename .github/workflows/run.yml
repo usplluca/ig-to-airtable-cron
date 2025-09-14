@@ -1,24 +1,34 @@
 name: IG → Airtable (hourly)
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "15 * * * *"   # 毎時15分に実行
-  workflow_dispatch: {}     # 手動実行もOK
+    - cron: "20 * * * *"   # UTC。JSTだと+9時間
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - run: node -v
-      - run: node index.js
+          node-version: 20
+
+      - name: Install deps (if any)
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm i
+          fi
+
+      - name: Run node index.js
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
           AIRTABLE_TABLE_POSTS: ${{ secrets.AIRTABLE_TABLE_POSTS }}
-          AIRTABLE_TABLE_TAGS: ${{ secrets.AIRTABLE_TABLE_TAGS }}
+          AIRTABLE_TABLE_TAGS:  ${{ secrets.AIRTABLE_TABLE_TAGS }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_TOKEN:   ${{ secrets.IG_TOKEN }}
+        run: node index.js
