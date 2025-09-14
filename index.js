@@ -92,18 +92,18 @@ async function run() {
       console.log(`Tag ${tagName}: ${items.length} posts`);
 
       for (const m of items) {
-        const fields = {
-          MediaID: m.id,
-          // ← リンク型フィールドなのでレコードIDで渡す（重要）
-          Hashtag: [{ id: tagRecId }],
-          MediaType: m.media_type ?? "",
-          MediaURL: m.media_url ?? "",
-          Permalink: m.permalink ?? "",
-          Caption: m.caption ?? "",
-          LikeCount: m.like_count ?? 0,
-          CommentsCount: m.comments_count ?? 0,
-          Timestamp: m.timestamp ?? null
-        };
+      const fields = {
+  MediaID: m.id,
+  Hashtag: [{ id: tagRecId }],              // ← リンク先(Hashtags)のレコードIDだけ渡す
+  MediaType: m.media_type || null,
+  MediaURL: m.media_url || null,
+  Permalink: m.permalink || null,
+  Caption: m.caption ?? "",
+  LikeCount: m.like_count ?? 0,
+  CommentsCount: m.comments_count ?? 0,
+  Timestamp: new Date((m.timestamp ?? Math.floor(Date.now()/1000)) * 1000).toISOString()
+};
+
 
         const exist = await findPostByMediaId(m.id);
         if (exist) {
