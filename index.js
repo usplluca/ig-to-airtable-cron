@@ -95,7 +95,7 @@ async function run() {
       for (const m of items) {
       const fields = {
   MediaID: m.id,
-  Hashtag: [{ id: tagRecId }],              // ← リンク先(Hashtags)のレコードIDだけ渡す
+  Hashtag: ["recncimqCKXyzY9Tx"],              // ← リンク先(Hashtags)のレコードIDだけ渡す
   MediaType: m.media_type || null,
   MediaURL: m.media_url || null,
   Permalink: m.permalink || null,
