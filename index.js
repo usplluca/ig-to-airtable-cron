@@ -102,9 +102,7 @@ async function run() {
   Caption: m.caption ?? "",
   LikeCount: m.like_count ?? 0,
   CommentsCount: m.comments_count ?? 0,
-Timestamp: m.timestamp
-  ? new Date(m.timestamp).toISOString()   // IGはISO文字列なのでそのままパース
-  : new Date().toISOString();             // 無ければ現在時刻
+ Timestamp: (m.timestamp ? new Date(m.timestamp).toISOString() : new Date().toISOString())            // 無ければ現在時刻
 };
 
 
