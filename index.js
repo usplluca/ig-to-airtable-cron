@@ -86,6 +86,7 @@ async function run() {
           "comments_count",
           "timestamp"
         ].join(",")
+         limit: 20,
       });
 
       const items = media?.data ?? [];
